@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHERIANA</title>
+  <link rel="manifest" href="/sheriana-app/manifest.json">
+  <meta name="theme-color" content="#6B8F71">
+  <link rel="apple-touch-icon" href="/sheriana-app/icon-192.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/sheriana-app/assets/index-vzUt7-B6.js"></script>
+  <link rel="stylesheet" crossorigin href="/sheriana-app/assets/index-Cczt02Vm.css">
+</head>
+<body>
+
+  <!-- ==================== SPLASH SCREEN ==================== -->
+  <div id="splash-screen" class="screen active">
+    <div class="splash-content">
+      <h1 class="splash-logo">SHERIANA</h1>
+      <div class="splash-line"></div>
+    </div>
+  </div>
+
+  <!-- ==================== LOGIN SCREEN ==================== -->
+  <div id="login-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="header-logo" onclick="goHome()" style="cursor:pointer">SHERIANA</h1>
+      <div class="header-right"></div>
+    </header>
+    <div class="login-content">
+      <div class="login-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="20" r="10" stroke="#1A1A1A" stroke-width="2"/>
+          <path d="M6 44c0-10 8-18 18-18s18 8 18 18" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h1 class="login-title">Hoş Geldiniz</h1>
+      <p class="login-subtitle">Alışverişe devam etmek için giriş yapın</p>
+      <div class="login-form">
+        <div class="form-group">
+          <label>E-posta</label>
+          <input type="email" placeholder="email@ornek.com" class="form-input" id="login-email">
+        </div>
+        <div class="form-group">
+          <label>Şifre</label>
+          <input type="password" placeholder="Şifreniz" class="form-input" id="login-password">
+        </div>
+        <div id="login-error" class="login-error"></div>
+        <button class="login-submit-btn" onclick="loginWithEmail()">Giriş Yap</button>
+      </div>
+      <div class="login-divider"><span>veya</span></div>
+      <button class="google-btn" onclick="loginWithGoogle()">
+        <svg width="20" height="20" viewBox="0 0 20 20">
+          <path d="M19.6 10.2c0-.7-.1-1.4-.2-2H10v3.8h5.4c-.2 1.2-1 2.3-2.1 3v2.5h3.4c2-1.8 3-4.5 3-7.3z" fill="#4285F4"/>
+          <path d="M10 20c2.9 0 5.3-1 7-2.6l-3.4-2.6c-1 .6-2.2 1-3.6 1-2.8 0-5.1-1.9-6-4.4H.5v2.7C2.2 17.8 5.8 20 10 20z" fill="#34A853"/>
+          <path d="M4 11.4c-.2-.7-.4-1.4-.4-2.1s.1-1.5.4-2.1V4.4H.5C-.2 5.8-.5 7.4-.5 9s.3 3.2 1 4.6L4 11.4z" fill="#FBBC05"/>
+          <path d="M10 3.9c1.6 0 3 .5 4.1 1.6l3.1-3.1C15.3.9 12.9 0 10 0 5.8 0 2.2 2.2.5 5.4L4 8.1c.8-2.5 3.1-4.2 6-4.2z" fill="#EA4335"/>
+        </svg>
+        Google ile Giriş Yap
+      </button>
+      <p class="login-terms">Giriş yaparak <a href="#" onclick="event.preventDefault(); navigateTo('privacy')">Gizlilik Politikası</a>'nı kabul etmiş olursunuz.</p>
+    </div>
+  </div>
+
+  <!-- ==================== HAMBURGER MENU ==================== -->
+  <div id="menu-overlay" class="menu-overlay" onclick="if(event.target===this)toggleMenu()">
+    <div class="menu-panel">
+      <div class="menu-header">
+        <span class="menu-title">SHERIANA</span>
+        <button class="menu-close" onclick="toggleMenu()">&times;</button>
+      </div>
+      <!-- Dynamic categories rendered by JS -->
+      <div class="menu-section" id="menu-categories"></div>
+      <div class="menu-section" id="menu-account"></div>
+      <div class="menu-section">
+        <h3 class="menu-section-title">Ayarlar</h3>
+        <div class="menu-setting">
+          <span>Dil</span>
+          <select class="menu-select">
+            <option>Türkçe</option>
+            <option>English</option>
+          </select>
+        </div>
+        <div class="menu-setting">
+          <span>Para Birimi</span>
+          <select class="menu-select">
+            <option>EUR (&euro;)</option>
+            <option>USD ($)</option>
+            <option>TRY (&#8378;)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ANA SAYFA ==================== -->
+  <div id="home-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="toggleMenu()">
+        <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
+          <path d="M1 1h20M1 8h20M1 15h20" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <h1 class="header-logo" onclick="goHome()" style="cursor:pointer">SHERIANA</h1>
+      <div class="header-right">
+        <button class="header-btn" onclick="toggleSearch()">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="8.5" cy="8.5" r="7" stroke="#1A1A1A" stroke-width="1.5"/>
+            <path d="M14 14l5 5" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="header-btn cart-btn" onclick="navigateTo('cart')">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M5 7h14l-1.5 8H6.5L5 7z" stroke="#1A1A1A" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M5 7L4 3H1" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="8" cy="18" r="1" fill="#1A1A1A"/>
+            <circle cx="16" cy="18" r="1" fill="#1A1A1A"/>
+          </svg>
+          <span class="cart-badge" id="cart-badge">0</span>
+        </button>
+      </div>
+    </header>
+
+    <div id="search-bar" class="search-bar">
+      <input type="text" placeholder="Ürün ara..." class="search-input" id="search-input" oninput="filterProducts()">
+    </div>
+
+    <!-- Hero Slider -->
+    <div class="hero-slider">
+      <div class="slider-track" id="hero-track">
+        <div class="slide" style="background: linear-gradient(135deg, rgba(107,143,113,0.85), rgba(74,107,79,0.9)), url('https://images.unsplash.com/photo-1600369672770-985fd30004eb?w=800&q=80') center/cover;">
+          <div class="slide-content">
+            <span class="slide-tag">Yeni Sezon</span>
+            <h2>Premium Türk Havluları</h2>
+            <p>Denizli'den doğrudan kapınıza</p>
+            <button class="slide-btn" onclick="closeMenuAndFilter('havlu')">Keşfet</button>
+          </div>
+        </div>
+        <div class="slide" style="background: linear-gradient(135deg, rgba(196,168,130,0.8), rgba(168,135,95,0.85)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80') center/cover;">
+          <div class="slide-content">
+            <span class="slide-tag">%20 İndirim</span>
+            <h2>Plaj Koleksiyonu</h2>
+            <p>Yaz hazırlıkları başlasın</p>
+            <button class="slide-btn" onclick="closeMenuAndFilter('plaj')">Alışverişe Başla</button>
+          </div>
+        </div>
+        <div class="slide" style="background: linear-gradient(135deg, rgba(26,26,26,0.85), rgba(51,51,51,0.9)), url('https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&q=80') center/cover;">
+          <div class="slide-content">
+            <span class="slide-tag">İlk Siparişe Özel</span>
+            <h2>%15 Hoşgeldin İndirimi</h2>
+            <p>Kod: HOSGELDIN15</p>
+            <button class="slide-btn btn-light" onclick="closeMenuAndFilter('all')">Hemen Al</button>
+          </div>
+        </div>
+      </div>
+      <div class="slider-dots" id="hero-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+
+    <!-- Category Filter (dynamic — filled by JS) -->
+    <div class="category-bar" id="category-bar"></div>
+
+    <!-- Product Grid -->
+    <section class="product-section">
+      <h2 class="section-title" id="section-title">Öne Çıkanlar</h2>
+      <div class="product-grid" id="product-grid"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-brand">SHERIANA</div>
+      <div class="footer-links">
+        <a href="#" onclick="event.preventDefault(); navigateTo('about')">Hakkımızda</a>
+        <a href="#" onclick="event.preventDefault(); navigateTo('contact')">İletişim</a>
+        <a href="#" onclick="event.preventDefault(); navigateTo('blog')">Blog</a>
+        <a href="#" onclick="event.preventDefault(); navigateTo('privacy')">Gizlilik Politikası</a>
+      </div>
+      <div class="footer-social">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 SHERIANA. Tüm hakları saklıdır.</p>
+    </footer>
+  </div>
+
+  <!-- ==================== ÜRÜN DETAY ==================== -->
+  <div id="product-screen" class="screen">
+    <header class="header header-transparent">
+      <button class="header-btn header-btn-bg" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="header-logo" onclick="goHome()" style="cursor:pointer">SHERIANA</h1>
+      <div class="header-right">
+        <button class="header-btn header-btn-bg cart-btn" onclick="navigateTo('cart')">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M5 7h14l-1.5 8H6.5L5 7z" stroke="#1A1A1A" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M5 7L4 3H1" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="8" cy="18" r="1" fill="#1A1A1A"/>
+            <circle cx="16" cy="18" r="1" fill="#1A1A1A"/>
+          </svg>
+          <span class="cart-badge">0</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="gallery">
+      <div class="gallery-track" id="gallery-track"></div>
+      <div class="gallery-dots" id="gallery-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+
+    <div class="product-detail">
+      <div id="product-info"></div>
+      <p class="detail-desc" id="product-desc"></p>
+
+      <div class="variant-section">
+        <h3 class="variant-title">Renk</h3>
+        <div class="color-options" id="color-options"></div>
+      </div>
+
+      <div class="variant-section">
+        <h3 class="variant-title">Beden</h3>
+        <div class="size-options" id="size-options"></div>
+      </div>
+
+      <div class="detail-info-row">
+        <span class="info-label">Malzeme</span>
+        <span class="info-value" id="product-material"></span>
+      </div>
+      <div class="detail-info-row">
+        <span class="info-label">Teslimat</span>
+        <span class="info-value" id="product-delivery"></span>
+      </div>
+
+      <button class="add-to-cart-btn" onclick="addToCart()">Sepete Ekle</button>
+
+      <div id="reviews-preview"></div>
+      <div id="similar-products"></div>
+    </div>
+  </div>
+
+  <!-- ==================== YORUMLAR SAYFASI ==================== -->
+  <div id="reviews-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="page-title" id="reviews-title">Yorumlar</h1>
+      <div class="header-right"></div>
+    </header>
+    <div class="reviews-page">
+      <div id="reviews-summary"></div>
+      <div id="reviews-list"></div>
+    </div>
+  </div>
+
+  <!-- ==================== SEPET ==================== -->
+  <div id="cart-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="page-title">Sepetim</h1>
+      <div class="header-right"></div>
+    </header>
+    <div class="cart-content">
+      <div id="cart-items"></div>
+      <div id="cart-summary"></div>
+    </div>
+    <div class="empty-state" id="cart-empty" style="display:none">
+      <div class="empty-icon">&#128722;</div>
+      <h2 class="empty-title">Sepetiniz Boş</h2>
+      <p class="empty-text">Beğendiğiniz ürünleri sepetinize ekleyerek alışverişe başlayın.</p>
+      <button class="empty-btn" onclick="navigateTo('home')">Alışverişe Başla</button>
+    </div>
+  </div>
+
+  <!-- ==================== CHECKOUT ==================== -->
+  <div id="checkout-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="page-title">Ödeme</h1>
+      <div class="header-right"></div>
+    </header>
+
+    <div class="checkout-progress">
+      <div class="progress-step active" id="step-1">
+        <div class="step-circle">1</div>
+        <span class="step-label">Adres</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step" id="step-2">
+        <div class="step-circle">2</div>
+        <span class="step-label">Kargo</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step" id="step-3">
+        <div class="step-circle">3</div>
+        <span class="step-label">Ödeme</span>
+      </div>
+    </div>
+
+    <div class="checkout-step active" id="checkout-step-1">
+      <h2 class="step-title">Teslimat Adresi</h2>
+      <div class="form-group">
+        <label>Ad Soyad</label>
+        <input type="text" placeholder="Adınız Soyadınız" class="form-input" id="checkout-name">
+      </div>
+      <div class="form-group">
+        <label>E-posta</label>
+        <input type="email" placeholder="email@ornek.com" class="form-input" id="checkout-email">
+      </div>
+      <div class="form-group">
+        <label>Telefon</label>
+        <input type="tel" placeholder="+31 6 1234 5678" class="form-input" id="checkout-phone">
+      </div>
+      <div class="form-group">
+        <label>Adres</label>
+        <input type="text" placeholder="Sokak ve numara" class="form-input" id="checkout-address">
+      </div>
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Şehir</label>
+          <input type="text" placeholder="Şehir" class="form-input" id="checkout-city">
+        </div>
+        <div class="form-group half">
+          <label>Posta Kodu</label>
+          <input type="text" placeholder="1234 AB" class="form-input" id="checkout-zip">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Ülke</label>
+        <select class="form-input" id="checkout-country">
+          <option>Hollanda</option>
+          <option>Almanya</option>
+          <option>Belçika</option>
+          <option>Fransa</option>
+          <option>Türkiye</option>
+        </select>
+      </div>
+      <button class="next-step-btn" onclick="nextStep(2)">Devam Et</button>
+    </div>
+
+    <div class="checkout-step" id="checkout-step-2">
+      <h2 class="step-title">Kargo Seçimi</h2>
+      <div class="shipping-option selected" onclick="selectShipping(this)">
+        <div class="shipping-radio"></div>
+        <div class="shipping-info"><h3>Standart Kargo</h3><p>3-5 iş günü</p></div>
+        <span class="shipping-price">Ücretsiz</span>
+      </div>
+      <div class="shipping-option" onclick="selectShipping(this)">
+        <div class="shipping-radio"></div>
+        <div class="shipping-info"><h3>Hızlı Kargo</h3><p>1-2 iş günü</p></div>
+        <span class="shipping-price">&euro;4,90</span>
+      </div>
+      <button class="next-step-btn" onclick="nextStep(3)">Devam Et</button>
+    </div>
+
+    <div class="checkout-step" id="checkout-step-3">
+      <h2 class="step-title">Ödeme Bilgileri</h2>
+      <div class="form-group">
+        <label>Kart Numarası</label>
+        <input type="text" placeholder="1234 5678 9012 3456" class="form-input">
+      </div>
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Son Kullanma</label>
+          <input type="text" placeholder="AA/YY" class="form-input">
+        </div>
+        <div class="form-group half">
+          <label>CVV</label>
+          <input type="text" placeholder="123" class="form-input">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Kart Üzerindeki İsim</label>
+        <input type="text" placeholder="Ad Soyad" class="form-input">
+      </div>
+      <div class="order-summary-mini" id="checkout-summary"></div>
+      <button class="pay-btn" id="pay-btn" onclick="completePurchase()">Siparişi Tamamla</button>
+    </div>
+  </div>
+
+  <!-- ==================== SİPARİŞ BAŞARILI ==================== -->
+  <div id="success-screen" class="screen">
+    <div class="success-content">
+      <div class="success-check">&#10003;</div>
+      <h1 class="success-title">Siparişiniz Alındı!</h1>
+      <p class="success-text">Sipariş numaranız: <strong id="order-number">#SHR-2026-0000</strong></p>
+      <p class="success-text">Kargo takip bilgileri e-posta adresinize gönderilecektir.</p>
+      <p class="success-delivery">Tahmini teslimat: 3-5 iş günü</p>
+      <button class="empty-btn" onclick="navigateTo('home')">Alışverişe Devam Et</button>
+    </div>
+  </div>
+
+  <!-- ==================== HAKKIMIZDA ==================== -->
+  <div id="about-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="header-logo" onclick="goHome()" style="cursor:pointer">SHERIANA</h1>
+      <div class="header-right"></div>
+    </header>
+    <div class="info-page">
+      <h1 class="info-title">Hakkımızda</h1>
+      <p>SHERIANA, Türkiye'nin zengin tekstil geleneğini Avrupa'ya taşıyan bir e-ticaret markasıdır.</p>
+      <p>Denizli'nin yüzyıllık havlu üretim mirasını modern tasarımlarla birleştirerek, kaliteli ve sürdürülebilir ev tekstili ürünleri sunuyoruz.</p>
+      <h2>Misyonumuz</h2>
+      <p>Türk tekstil zanaatını dünyaya tanıtmak, adil ticaret ilkeleriyle üreticileri desteklemek ve müşterilerimize en kaliteli ürünleri uygun fiyatlarla ulaştırmak.</p>
+      <h2>Neden SHERIANA?</h2>
+      <p>Her ürünümüz %100 doğal malzemelerden, Denizli'deki güvenilir atölyelerde üretilir. Aracısız, doğrudan sizin kapınıza.</p>
+    </div>
+  </div>
+
+  <!-- ==================== İLETİŞİM ==================== -->
+  <div id="contact-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="header-logo" onclick="goHome()" style="cursor:pointer">SHERIANA</h1>
+      <div class="header-right"></div>
+    </header>
+    <div class="info-page">
+      <h1 class="info-title">İletişim</h1>
+      <p>Sorularınız için bize ulaşın. En kısa sürede dönüş yapacağız.</p>
+      <div class="contact-info">
+        <div class="contact-row">
+          <span class="contact-label">E-posta</span>
+          <span>info@sheriana.com</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-label">WhatsApp</span>
+          <span>+31 6 1234 5678</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-label">Instagram</span>
+          <span>@sheriana.official</span>
+        </div>
+      </div>
+      <h2>Mesaj Gönderin</h2>
+      <div class="form-group">
+        <label>Adınız</label>
+        <input type="text" placeholder="Adınız Soyadınız" class="form-input">
+      </div>
+      <div class="form-group">
+        <label>E-posta</label>
+        <input type="email" placeholder="email@ornek.com" class="form-input">
+      </div>
+      <div class="form-group">
+        <label>Mesajınız</label>
+        <textarea placeholder="Mesajınızı yazın..." class="form-input form-textarea"></textarea>
+      </div>
+      <button class="next-step-btn" onclick="showToast('Mesajınız gönderildi!')">Gönder</button>
+    </div>
+  </div>
+
+  <!-- ==================== BLOG ==================== -->
+  <div id="blog-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="header-logo" onclick="goHome()" style="cursor:pointer">SHERIANA</h1>
+      <div class="header-right"></div>
+    </header>
+    <div class="info-page">
+      <h1 class="info-title">Blog</h1>
+      <div id="blog-cards"></div>
+    </div>
+  </div>
+
+  <!-- ==================== BLOG DETAY ==================== -->
+  <div id="blog-detail-screen" class="screen">
+    <header class="header header-transparent">
+      <button class="header-btn header-btn-bg" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="header-logo" onclick="goHome()" style="cursor:pointer">SHERIANA</h1>
+      <div class="header-right"></div>
+    </header>
+    <img class="blog-detail-img" id="blog-detail-img" src="" alt="">
+    <div class="blog-detail-body">
+      <p class="blog-detail-date" id="blog-detail-date"></p>
+      <h1 class="blog-detail-title" id="blog-detail-title"></h1>
+      <div class="blog-detail-text" id="blog-detail-content"></div>
+      <button class="see-all-btn" onclick="goBack()" style="margin-top:24px;">&#8592; Blog'a Dön</button>
+    </div>
+  </div>
+
+  <!-- ==================== GİZLİLİK ==================== -->
+  <div id="privacy-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="header-logo" onclick="goHome()" style="cursor:pointer">SHERIANA</h1>
+      <div class="header-right"></div>
+    </header>
+    <div class="info-page">
+      <h1 class="info-title">Gizlilik Politikası</h1>
+      <p>Son güncelleme: 1 Mart 2026</p>
+      <h2>Kişisel Verilerin Korunması</h2>
+      <p>SHERIANA olarak kişisel verilerinizin güvenliği bizim için önemlidir. Toplanan veriler yalnızca sipariş süreçleri ve hizmet iyileştirme amacıyla kullanılır.</p>
+      <h2>Çerezler</h2>
+      <p>Sitemizde deneyiminizi iyileştirmek için çerezler kullanılmaktadır. Tarayıcı ayarlarınızdan çerez tercihlerinizi yönetebilirsiniz.</p>
+      <h2>Veri Paylaşımı</h2>
+      <p>Kişisel verileriniz üçüncü taraflarla paylaşılmaz. Yalnızca kargo ve ödeme iş ortaklarımızla sipariş teslimatı için gerekli minimum bilgi paylaşılır.</p>
+      <h2>İletişim</h2>
+      <p>Gizlilik politikamız hakkında sorularınız için info@sheriana.com adresine yazabilirsiniz.</p>
+    </div>
+  </div>
+
+  <!-- ==================== SİPARİŞLERİM ==================== -->
+  <div id="orders-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="page-title">Siparişlerim</h1>
+      <div class="header-right"></div>
+    </header>
+    <div class="info-page" id="orders-content"></div>
+  </div>
+
+  <!-- ==================== FAVORİLERİM ==================== -->
+  <div id="favorites-screen" class="screen">
+    <header class="header">
+      <button class="header-btn" onclick="goBack()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 2L5 10l10 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1 class="page-title">Favorilerim</h1>
+      <div class="header-right"></div>
+    </header>
+    <div class="info-page" id="favorites-content"></div>
+  </div>
+
+  <!-- ==================== ADMIN (Tek Ekran + Sidebar) ==================== -->
+  <div id="admin-screen" class="screen">
+    <div class="admin-layout">
+      <aside class="admin-sidebar" id="admin-sidebar">
+        <div class="admin-sidebar-header">
+          <span class="admin-sidebar-logo">SHERIANA</span>
+          <span class="admin-badge-text">ADMIN</span>
+        </div>
+        <nav class="admin-sidebar-nav" id="admin-nav"></nav>
+        <div class="admin-sidebar-footer">
+          <button class="admin-exit-btn" onclick="exitAdmin()">&#8592; Mağazaya Dön</button>
+        </div>
+      </aside>
+      <div id="admin-mobile-overlay" class="admin-mobile-overlay" onclick="closeMobileSidebar()"></div>
+      <main class="admin-main" id="admin-main"></main>
+    </div>
+    <button class="admin-mobile-toggle" id="admin-mobile-toggle" onclick="toggleAdminSidebar()">&#9776;</button>
+  </div>
+
+  <!-- ==================== TOAST ==================== -->
+  <div id="toast" class="toast">
+    <span id="toast-msg"></span>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
+</body>
+</html>
